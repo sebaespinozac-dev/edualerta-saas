@@ -1,0 +1,14 @@
+import type { Request, Response, NextFunction } from 'express';
+import type { ZodSchema } from 'zod';
+
+type Source = 'body' | 'query' | 'params';
+
+export function validate(schema: ZodSchema, source: Source = 'body') {
+  return (req: Request, _res: Response, next: NextFunction) => {
+    const result = schema.safeParse(req[source]);
+    if (!result.success) return next(result.error);
+    // Re-assign so downstream handlers see parsed/coerced values
+    (req as unknown as Record<Source, unknown>)[source] = result.data;
+    next();
+  };
+}
