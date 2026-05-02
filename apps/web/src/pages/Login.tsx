@@ -34,6 +34,14 @@ export function Login() {
       <div className="hidden border-r border-border bg-bg lg:flex lg:flex-col lg:justify-between lg:p-12">
         <Logo />
         <div className="space-y-6">
+          {/* Hero image */}
+          <div className="flex justify-center">
+            <img
+              src="/logo-programa.jpg"
+              alt="EduAlerta — Seguridad Escolar"
+              className="w-80 drop-shadow-sm"
+            />
+          </div>
           <div className="text-3xl font-semibold tracking-tight text-text">
             Seguridad escolar<br />en tiempo real.
           </div>
@@ -65,7 +73,13 @@ export function Login() {
 
       <div className="flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-sm">
-          <div className="mb-8 lg:hidden">
+          {/* Logo visible en móvil */}
+          <div className="mb-6 flex flex-col items-center gap-3 lg:hidden">
+            <img
+              src="/logo-programa.jpg"
+              alt="EduAlerta"
+              className="w-40 drop-shadow-sm"
+            />
             <Logo />
           </div>
           <h1 className="text-xl font-semibold tracking-tight text-text">Iniciar sesión</h1>
