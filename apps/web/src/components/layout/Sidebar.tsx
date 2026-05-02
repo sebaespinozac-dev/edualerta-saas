@@ -4,6 +4,7 @@ import {
   Building2,
   Users,
   BellRing,
+  MessageSquare,
   Map,
   FileText,
   Settings,
@@ -14,6 +15,7 @@ const items = [
   { to: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { to: '/alumnos', label: 'Alumnos', icon: Users },
   { to: '/alertas', label: 'Alertas', icon: BellRing },
+  { to: '/mensajes', label: 'Mensajes', icon: MessageSquare },
   { to: '/mapa', label: 'Mapa', icon: Map },
   { to: '/reportes', label: 'Reportes', icon: FileText },
 ];

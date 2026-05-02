@@ -92,7 +92,9 @@ export function Alumnos() {
                     <td className="px-4 py-2.5">
                       <div className="flex items-center gap-2.5">
                         <Avatar name={s.name} src={s.photoUrl} size={36} className="flex-none" />
-                        <span className="text-xs font-medium text-text">{s.name}</span>
+                        <Link to={`/alumnos/${s.id}`} className="text-xs font-medium text-text hover:text-accent transition-colors hover:underline">
+                          {s.name}
+                        </Link>
                       </div>
                     </td>
                     <td className="px-4 py-2.5 text-2xs text-muted tabular">{s.run}</td>

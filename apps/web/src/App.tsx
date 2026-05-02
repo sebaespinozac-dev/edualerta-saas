@@ -8,6 +8,8 @@ import { Mapa } from '@/pages/Mapa';
 import { Apoderado } from '@/pages/Apoderado';
 import { Reportes } from '@/pages/Reportes';
 import { Configuracion } from '@/pages/Configuracion';
+import { FichaAlumno } from '@/pages/FichaAlumno';
+import { Mensajes } from '@/pages/Mensajes';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -32,6 +34,8 @@ export default function App() {
       <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
       <Route path="/alumnos" element={<Protected><Alumnos /></Protected>} />
       <Route path="/alumnos/nuevo" element={<Protected><NuevoAlumno /></Protected>} />
+      <Route path="/alumnos/:id" element={<Protected><FichaAlumno /></Protected>} />
+      <Route path="/mensajes" element={<Protected><Mensajes /></Protected>} />
       <Route path="/alertas" element={<Protected><Alertas /></Protected>} />
       <Route path="/mapa" element={<Protected><Mapa /></Protected>} />
       <Route path="/reportes" element={<Protected><Reportes /></Protected>} />
