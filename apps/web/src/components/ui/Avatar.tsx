@@ -4,11 +4,27 @@ export function Avatar({
   name,
   size = 28,
   className,
+  src,
 }: {
   name: string;
   size?: number;
   className?: string;
+  src?: string;
 }) {
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt={name}
+        className={cn(
+          'inline-block rounded-full border border-border object-cover',
+          className,
+        )}
+        style={{ width: size, height: size }}
+      />
+    );
+  }
+
   return (
     <span
       className={cn(

@@ -59,7 +59,7 @@ export function Alumnos() {
       <div className="relative">
         <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted" strokeWidth={1.75} />
         <Input
-          placeholder="Buscar por nombre, RUN o apoderado…"
+          placeholder="Buscar por nombre, RUN o apoderado..."
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -88,22 +88,32 @@ export function Alumnos() {
               {slice.map((s) => {
                 const school = schoolByRbd[s.schoolRbd];
                 return (
-                  <tr key={s.id} className="border-b border-border last:border-b-0 hover:bg-bg/40">
+                  <tr key={s.id} className="border-b border-border last:border-b-0 hover:bg-bg/40 transition-colors">
                     <td className="px-4 py-2.5">
                       <div className="flex items-center gap-2.5">
-                        <Avatar name={s.name} size={26} />
+                        <Avatar name={s.name} src={s.photoUrl} size={36} className="flex-none" />
                         <span className="text-xs font-medium text-text">{s.name}</span>
                       </div>
                     </td>
                     <td className="px-4 py-2.5 text-2xs text-muted tabular">{s.run}</td>
-                    <td className="px-4 py-2.5 text-xs text-text">{s.grade}</td>
-                    <td className="px-4 py-2.5 text-xs text-muted">{school?.name}</td>
+                    <td className="px-4 py-2.5">
+                      <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-600/10 dark:bg-blue-500/10 dark:text-blue-400 dark:ring-blue-500/20">
+                        {s.grade}
+                      </span>
+                    </td>
+                    <td className="px-4 py-2.5 text-xs text-muted max-w-[200px] truncate">{school?.name}</td>
                     <td className="px-4 py-2.5 text-xs text-text">{s.guardianName}</td>
                     <td className="px-4 py-2.5">
                       {s.status === 'presente' ? (
-                        <Badge tone="success" dot>Presente</Badge>
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-2xs font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                          <span className="size-1.5 rounded-full bg-emerald-500" />
+                          Presente
+                        </span>
                       ) : s.status === 'ausente' ? (
-                        <Badge tone="warning" dot>Ausente</Badge>
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-0.5 text-2xs font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-400">
+                          <span className="size-1.5 rounded-full bg-red-500" />
+                          Ausente
+                        </span>
                       ) : (
                         <Badge tone="default" dot>Retirado</Badge>
                       )}
@@ -114,7 +124,7 @@ export function Alumnos() {
               {slice.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-4 py-12 text-center text-xs text-muted">
-                    Sin resultados para «{search}»
+                    Sin resultados para &laquo;{search}&raquo;
                   </td>
                 </tr>
               )}
@@ -123,7 +133,7 @@ export function Alumnos() {
         </div>
         <div className="flex items-center justify-between border-t border-border px-4 py-2.5 text-2xs text-muted">
           <div>
-            Página {page} de {totalPages} · {filtered.length} resultados
+            Pagina {page} de {totalPages} - {filtered.length} resultados
           </div>
           <div className="flex items-center gap-1.5">
             <Button

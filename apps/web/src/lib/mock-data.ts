@@ -73,6 +73,7 @@ export const students: Student[] = Array.from({ length: 48 }).map((_, i) => {
     guardianName: `${guardianFn} ${guardianLn}`,
     guardianPhone: `+56 9 ${pad(((i * 1234567) % 90000000) + 10000000, 8).slice(0, 4)} ${pad(((i * 1234567) % 90000000) + 10000000, 8).slice(4)}`,
     status: i % 9 === 0 ? 'ausente' : 'presente',
+    photoUrl: `https://i.pravatar.cc/150?u=${pad(i + 1, 4)}`,
   };
 });
 

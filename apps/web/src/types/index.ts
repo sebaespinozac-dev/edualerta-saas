@@ -22,6 +22,7 @@ export interface Student {
   guardianName: string;
   guardianPhone: string;
   status: 'presente' | 'ausente' | 'retirado';
+  photoUrl: string;
 }
 
 export interface ActivityEvent {

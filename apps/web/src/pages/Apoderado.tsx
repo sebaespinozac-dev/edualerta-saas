@@ -1,18 +1,36 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, ChevronRight, MessageCircle, Phone, ShieldCheck, LogOut } from 'lucide-react';
+import {
+  AlertTriangle,
+  Bell,
+  ChevronRight,
+  LogIn,
+  LogOut,
+  MessageCircle,
+  Phone,
+  ShieldAlert,
+  ShieldCheck,
+  Smartphone,
+} from 'lucide-react';
+import { toast } from 'sonner';
 import { Logo } from '@/components/layout/Logo';
 import { Card } from '@/components/ui/Card';
 import { Avatar } from '@/components/ui/Avatar';
-import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/Dialog';
 import { useAuth } from '@/hooks/useAuth';
+import { students, schools } from '@/lib/mock-data';
 
-const child = {
-  name: 'Sofía Espinosa González',
-  grade: '4° Básico',
-  school: 'Escuela D-68 Juan Sandoval Carrasco',
-  status: 'En el colegio desde 07:58',
-};
+const child = students[0];
+const childSchool = schools.find((s) => s.rbd === child.schoolRbd)!;
 
 const timeline = [
   { time: '07:58', label: 'Ingreso registrado', kind: 'in' as const, ok: true },
@@ -21,9 +39,55 @@ const timeline = [
   { time: '15:30', label: 'Salida estimada', kind: 'pending' as const, ok: false },
 ];
 
+const mockNotifications = [
+  {
+    id: '1',
+    icon: 'entrada' as const,
+    message: 'Su hijo/a ingreso al establecimiento',
+    time: 'Hoy 07:58',
+  },
+  {
+    id: '2',
+    icon: 'retiro' as const,
+    message: 'Su hijo/a fue retirado/a ayer a las 15:35',
+    time: 'Ayer 15:35',
+  },
+  {
+    id: '3',
+    icon: 'alerta' as const,
+    message: `Alerta general activada en ${childSchool.name}`,
+    time: 'Hace 3 dias',
+  },
+];
+
+function NotificationIcon({ kind }: { kind: 'entrada' | 'retiro' | 'alerta' }) {
+  if (kind === 'entrada') {
+    return (
+      <div className="flex size-8 flex-none items-center justify-center rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+        <LogIn className="h-4 w-4" strokeWidth={1.75} />
+      </div>
+    );
+  }
+  if (kind === 'retiro') {
+    return (
+      <div className="flex size-8 flex-none items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+        <LogOut className="h-4 w-4" strokeWidth={1.75} />
+      </div>
+    );
+  }
+  return (
+    <div className="flex size-8 flex-none items-center justify-center rounded-full bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400">
+      <ShieldAlert className="h-4 w-4" strokeWidth={1.75} />
+    </div>
+  );
+}
+
 export function Apoderado() {
   const { signOut } = useAuth();
   const navigate = useNavigate();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [smsEnabled, setSmsEnabled] = useState(true);
+  const [whatsappEnabled, setWhatsappEnabled] = useState(true);
 
   return (
     <div className="min-h-screen bg-bg pb-24">
@@ -49,28 +113,73 @@ export function Apoderado() {
       </header>
 
       <main className="mx-auto max-w-md space-y-3 px-4 py-5">
-        {/* hero card */}
+        {/* Hero card with large photo */}
         <Card className="p-5">
-          <div className="flex items-center gap-3">
-            <Avatar name={child.name} size={44} />
-            <div className="min-w-0 flex-1">
-              <div className="text-sm font-semibold text-text">{child.name}</div>
-              <div className="truncate text-2xs text-muted">
-                {child.grade} · {child.school}
-              </div>
+          <div className="flex flex-col items-center text-center gap-3">
+            <Avatar
+              name={child.name}
+              src={child.photoUrl}
+              size={80}
+              className="ring-4 ring-emerald-500/20"
+            />
+            <div>
+              <div className="text-base font-semibold text-text">{child.name}</div>
+              <div className="mt-0.5 text-xs text-muted">{child.grade}</div>
+              <div className="mt-0.5 text-2xs text-muted">{childSchool.name}</div>
             </div>
           </div>
-          <div className="mt-4">
-            <Badge tone="success" dot>
-              {child.status}
-            </Badge>
+          <div className="mt-4 flex justify-center">
+            {child.status === 'presente' ? (
+              <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                Presente - Ingreso 07:58 hrs
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-2 rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 dark:bg-red-500/10 dark:text-red-400">
+                <span className="size-2 rounded-full bg-red-500" />
+                Ausente hoy
+              </span>
+            )}
           </div>
         </Card>
 
-        {/* timeline */}
+        {/* Emergency Alert Button */}
+        <Dialog open={alertOpen} onOpenChange={setAlertOpen}>
+          <DialogTrigger asChild>
+            <button className="flex w-full items-center justify-center gap-2.5 rounded-lg bg-red-600 px-4 py-3.5 text-sm font-semibold text-white shadow-lg shadow-red-500/20 transition-all hover:bg-red-700 hover:shadow-red-500/30 active:scale-[0.98]">
+              <AlertTriangle className="h-5 w-5" strokeWidth={2} />
+              Alerta de Emergencia
+            </button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Confirmar alerta de emergencia</DialogTitle>
+              <DialogDescription>
+                Esta accion enviara una alerta de emergencia al establecimiento {childSchool.name}.
+                El equipo directivo sera notificado inmediatamente. ¿Deseas continuar?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button variant="ghost" onClick={() => setAlertOpen(false)}>
+                Cancelar
+              </Button>
+              <Button
+                variant="danger"
+                onClick={() => {
+                  setAlertOpen(false);
+                  toast.success('Alerta enviada al establecimiento');
+                }}
+              >
+                Enviar alerta
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Timeline */}
         <Card className="overflow-hidden">
           <div className="border-b border-border px-4 py-2.5 text-xs font-semibold text-text">
-            Hoy · Martes
+            Hoy - Actividad
           </div>
           <ul>
             {timeline.map((t) => (
@@ -101,22 +210,43 @@ export function Apoderado() {
           </ul>
         </Card>
 
-        {/* alerts */}
+        {/* Notifications */}
+        <Card className="overflow-hidden">
+          <div className="border-b border-border px-4 py-2.5 text-xs font-semibold text-text">
+            Notificaciones recientes
+          </div>
+          <ul>
+            {mockNotifications.map((n) => (
+              <li
+                key={n.id}
+                className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0"
+              >
+                <NotificationIcon kind={n.icon} />
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs text-text">{n.message}</div>
+                  <div className="text-2xs text-muted">{n.time}</div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Card>
+
+        {/* Alerts status */}
         <Card className="flex items-center gap-3 p-4">
           <div className="flex size-9 items-center justify-center rounded-md border border-border bg-bg text-emerald-500">
             <ShieldCheck className="h-4 w-4" strokeWidth={1.5} />
           </div>
           <div className="min-w-0 flex-1">
             <div className="text-xs font-medium text-text">Sin alertas activas hoy</div>
-            <div className="text-2xs text-muted">Tu hijo está protegido y monitoreado en tiempo real.</div>
+            <div className="text-2xs text-muted">Tu hijo esta protegido y monitoreado en tiempo real.</div>
           </div>
         </Card>
 
-        {/* actions */}
+        {/* Actions */}
         <div className="grid grid-cols-2 gap-2.5">
           <Button variant="primary" size="lg" className="w-full">
             <Phone className="h-3.5 w-3.5" strokeWidth={1.75} />
-            Contactar dirección
+            Contactar direccion
           </Button>
           <Button variant="secondary" size="lg" className="w-full">
             <MessageCircle className="h-3.5 w-3.5" strokeWidth={1.75} />
@@ -124,8 +254,67 @@ export function Apoderado() {
           </Button>
         </div>
 
+        {/* SMS / WhatsApp Preferences */}
+        <Card className="overflow-hidden">
+          <div className="border-b border-border px-4 py-2.5 text-xs font-semibold text-text">
+            Preferencias de notificacion
+          </div>
+          <div className="divide-y divide-border">
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="flex size-8 flex-none items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                  <Smartphone className="h-4 w-4" strokeWidth={1.75} />
+                </div>
+                <div>
+                  <div className="text-xs font-medium text-text">Notificaciones SMS</div>
+                  <div className="text-2xs text-muted">{child.guardianPhone}</div>
+                </div>
+              </div>
+              <button
+                role="switch"
+                aria-checked={smsEnabled}
+                onClick={() => setSmsEnabled(!smsEnabled)}
+                className={`relative inline-flex h-6 w-11 flex-none items-center rounded-full transition-colors ${
+                  smsEnabled ? 'bg-emerald-500' : 'bg-border'
+                }`}
+              >
+                <span
+                  className={`inline-block size-4 rounded-full bg-white shadow-sm transition-transform ${
+                    smsEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div className="flex size-8 flex-none items-center justify-center rounded-full bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                  <MessageCircle className="h-4 w-4" strokeWidth={1.75} />
+                </div>
+                <div>
+                  <div className="text-xs font-medium text-text">Notificaciones WhatsApp</div>
+                  <div className="text-2xs text-muted">{child.guardianPhone}</div>
+                </div>
+              </div>
+              <button
+                role="switch"
+                aria-checked={whatsappEnabled}
+                onClick={() => setWhatsappEnabled(!whatsappEnabled)}
+                className={`relative inline-flex h-6 w-11 flex-none items-center rounded-full transition-colors ${
+                  whatsappEnabled ? 'bg-emerald-500' : 'bg-border'
+                }`}
+              >
+                <span
+                  className={`inline-block size-4 rounded-full bg-white shadow-sm transition-transform ${
+                    whatsappEnabled ? 'translate-x-6' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+        </Card>
+
         <p className="pt-6 text-center text-2xs text-muted">
-          © 2026 ECOAVES División de Ingeniería y Software · Built in Antofagasta
+          &copy; 2026 ECOAVES Division de Ingenieria y Software - Built in Antofagasta
         </p>
       </main>
     </div>

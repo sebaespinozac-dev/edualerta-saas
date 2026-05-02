@@ -19,7 +19,7 @@ export function Login() {
     e.preventDefault();
     setError(null);
     if (!email || !password) {
-      setError('Ingresa tu correo y contraseña.');
+      setError('Ingresa tu correo y contrasena.');
       return;
     }
     setSubmitting(true);
@@ -32,15 +32,80 @@ export function Login() {
     <div className="grid min-h-screen grid-cols-1 lg:grid-cols-[1fr_minmax(0,460px)]">
       {/* Left — immersive scene */}
       <div className="login-scene-wrap relative hidden overflow-hidden lg:block">
-        {/* Layered background */}
-        <div className="login-bg" />
+        {/* Sky gradient */}
+        <div className="login-sky" />
 
-        {/* Subtle clouds */}
-        <div className="login-cloud-a" />
-        <div className="login-cloud-b" />
-        <div className="login-cloud-c" />
+        {/* Atmospheric depth fog */}
+        <div className="login-depth-fog" />
 
-        {/* School image — integrated, no white box */}
+        {/* Clouds — slow, blurred, professional */}
+        <div className="login-cloud login-cloud-a" />
+        <div className="login-cloud login-cloud-b" />
+        <div className="login-cloud login-cloud-c" />
+        <div className="login-cloud login-cloud-d" />
+
+        {/* Sunrise warm glow */}
+        <div className="login-sunrise-glow" />
+
+        {/* Ground / grass plane */}
+        <div className="login-ground" />
+
+        {/* Perspective path from school to viewer */}
+        <div className="login-path" />
+        {/* Path center line detail */}
+        <div className="login-path-line" />
+
+        {/* Trees — organic distribution, CSS shapes */}
+        {/* Left side trees */}
+        <div className="login-tree login-tree--left-1">
+          <div className="login-tree__trunk" />
+          <div className="login-tree__canopy" />
+          <div className="login-tree__canopy login-tree__canopy--mid" />
+          <div className="login-tree__canopy login-tree__canopy--top" />
+        </div>
+        <div className="login-tree login-tree--left-2">
+          <div className="login-tree__trunk" />
+          <div className="login-tree__canopy" />
+          <div className="login-tree__canopy login-tree__canopy--top" />
+        </div>
+        <div className="login-tree login-tree--left-3">
+          <div className="login-tree__trunk" />
+          <div className="login-tree__canopy" />
+          <div className="login-tree__canopy login-tree__canopy--mid" />
+          <div className="login-tree__canopy login-tree__canopy--top" />
+        </div>
+        <div className="login-tree login-tree--left-4">
+          <div className="login-tree__trunk" />
+          <div className="login-tree__canopy" />
+          <div className="login-tree__canopy login-tree__canopy--top" />
+        </div>
+
+        {/* Right side trees */}
+        <div className="login-tree login-tree--right-1">
+          <div className="login-tree__trunk" />
+          <div className="login-tree__canopy" />
+          <div className="login-tree__canopy login-tree__canopy--mid" />
+          <div className="login-tree__canopy login-tree__canopy--top" />
+        </div>
+        <div className="login-tree login-tree--right-2">
+          <div className="login-tree__trunk" />
+          <div className="login-tree__canopy" />
+          <div className="login-tree__canopy login-tree__canopy--top" />
+        </div>
+        <div className="login-tree login-tree--right-3">
+          <div className="login-tree__trunk" />
+          <div className="login-tree__canopy" />
+          <div className="login-tree__canopy login-tree__canopy--mid" />
+          <div className="login-tree__canopy login-tree__canopy--top" />
+        </div>
+
+        {/* Tree shadows on ground */}
+        <div className="login-shadow login-shadow--left-1" />
+        <div className="login-shadow login-shadow--left-3" />
+        <div className="login-shadow login-shadow--right-1" />
+        <div className="login-shadow login-shadow--right-3" />
+
+        {/* School building image — centered anchor */}
         <div className="login-hero-img">
           <img
             src="/logo-programa.png"
@@ -71,11 +136,11 @@ export function Login() {
           {/* Bottom info */}
           <div className="space-y-5">
             <h2 className="text-[32px] font-bold leading-[1.15] tracking-tight text-white drop-shadow-lg">
-              Protegiendo a nuestros<br />estudiantes, cada día.
+              Protegiendo a nuestros<br />estudiantes, cada dia.
             </h2>
             <p className="max-w-md text-[13px] leading-relaxed text-white/90 drop-shadow">
               Plataforma operativa para sostenedores y establecimientos educacionales.
-              Cumplimiento integral de la Ley N° 21.809.
+              Cumplimiento integral de la Ley N 21.809.
             </p>
 
             <div className="flex gap-3 pt-1">
@@ -103,7 +168,7 @@ export function Login() {
             </div>
 
             <div className="text-[11px] text-white/50">
-              © 2026 ECOAVES División de Ingeniería y Software · Antofagasta, Chile
+              &copy; 2026 ECOAVES Division de Ingenieria y Software &middot; Antofagasta, Chile
             </div>
           </div>
         </div>
@@ -123,14 +188,14 @@ export function Login() {
             </div>
           </div>
 
-          <h1 className="text-xl font-semibold tracking-tight text-text">Iniciar sesión</h1>
+          <h1 className="text-xl font-semibold tracking-tight text-text">Iniciar sesion</h1>
           <p className="mt-1 text-xs text-muted">
             Ingresa con tu cuenta institucional CMDS Antofagasta.
           </p>
 
           <form onSubmit={onSubmit} className="mt-8 space-y-4">
             <div className="space-y-1.5">
-              <Label htmlFor="email">Correo electrónico</Label>
+              <Label htmlFor="email">Correo electronico</Label>
               <Input
                 id="email"
                 type="email"
@@ -143,20 +208,20 @@ export function Login() {
             </div>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Contraseña</Label>
+                <Label htmlFor="password">Contrasena</Label>
                 <button
                   type="button"
                   className="text-2xs text-muted hover:text-text"
                   onClick={() => alert('Contacta al administrador del sistema.')}
                 >
-                  ¿Olvidaste tu contraseña?
+                  Olvidaste tu contrasena?
                 </button>
               </div>
               <Input
                 id="password"
                 type="password"
                 autoComplete="current-password"
-                placeholder="••••••••"
+                placeholder="--------"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={submitting}
@@ -176,8 +241,8 @@ export function Login() {
           </form>
 
           <div className="mt-6 rounded-md border border-border bg-bg/50 p-3 text-2xs text-muted">
-            <span className="font-medium text-text">Demo:</span> usa cualquier correo y contraseña.
-            Si tu correo empieza con <code className="text-text">apoderado</code>, ingresarás como
+            <span className="font-medium text-text">Demo:</span> usa cualquier correo y contrasena.
+            Si tu correo empieza con <code className="text-text">apoderado</code>, ingresaras como
             apoderado.
           </div>
         </div>

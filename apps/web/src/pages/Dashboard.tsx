@@ -31,13 +31,13 @@ export function Dashboard() {
           />
           <div>
             <h1 className="text-xl font-semibold tracking-tight text-text">Overview</h1>
-            <p className="text-xs text-muted">Resumen operativo · CMDS Antofagasta</p>
+            <p className="text-xs text-muted">Resumen operativo - CMDS Antofagasta</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="secondary" size="sm">
             <Calendar className="h-3.5 w-3.5" strokeWidth={1.75} />
-            Últimos 7 días
+            Ultimos 7 dias
           </Button>
           <Button variant="secondary" size="sm">
             <Download className="h-3.5 w-3.5" strokeWidth={1.75} />
@@ -52,34 +52,38 @@ export function Dashboard() {
           label="Alumnos totales"
           value={formatNumber(totalStudents)}
           delta={{ value: '+12 vs. ayer', positive: true }}
+          tint="blue"
         />
         <StatCard
           label="Asistencia hoy"
           value={formatPercent(todayAttendance)}
           delta={{ value: '+0.4 pts vs. ayer', positive: true }}
           spark={sparklineSeries}
+          tint="green"
         />
         <StatCard
           label="Alertas activas"
           value={String(activeAlerts)}
           delta={{ value: 'Sin incidentes hoy' }}
           indicator="green"
+          tint={activeAlerts > 0 ? 'red' : 'amber'}
         />
         <StatCard
           label="Establecimientos"
           value={`${operative}/${schools.length}`}
           delta={{ value: '100% operativos' }}
           indicator="green"
+          tint="purple"
         />
       </div>
 
       {/* main grid */}
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_320px]">
-        <Card>
-          <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
+        <Card className="overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border bg-gradient-to-r from-blue-50/80 via-indigo-50/50 to-purple-50/30 px-4 py-2.5 dark:from-blue-500/5 dark:via-indigo-500/5 dark:to-purple-500/5">
             <div>
               <div className="text-xs font-semibold tracking-tight text-text">Asistencia diaria</div>
-              <div className="text-2xs text-muted">Últimos 5 días hábiles · todas las sedes</div>
+              <div className="text-2xs text-muted">Ultimos 5 dias habiles - todas las sedes</div>
             </div>
             <div className="flex items-center gap-1.5 text-2xs text-muted">
               <span className="size-1.5 rounded-full bg-accent" />

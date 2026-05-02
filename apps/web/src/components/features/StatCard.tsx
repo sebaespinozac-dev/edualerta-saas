@@ -2,17 +2,28 @@ import { Card } from '@/components/ui/Card';
 import { Sparkline } from '@/components/charts/Sparkline';
 import { cn } from '@/lib/utils';
 
+export type StatCardTint = 'blue' | 'green' | 'amber' | 'red' | 'purple' | null;
+
 export interface StatCardProps {
   label: string;
   value: string;
   delta?: { value: string; positive?: boolean } | null;
   spark?: number[];
   indicator?: 'green' | 'amber' | 'red' | null;
+  tint?: StatCardTint;
 }
 
-export function StatCard({ label, value, delta, spark, indicator }: StatCardProps) {
+const tintClasses: Record<NonNullable<StatCardTint>, string> = {
+  blue: 'bg-blue-50/60 border-blue-200/40 dark:bg-blue-500/5 dark:border-blue-500/15',
+  green: 'bg-emerald-50/60 border-emerald-200/40 dark:bg-emerald-500/5 dark:border-emerald-500/15',
+  amber: 'bg-amber-50/60 border-amber-200/40 dark:bg-amber-500/5 dark:border-amber-500/15',
+  red: 'bg-red-50/60 border-red-200/40 dark:bg-red-500/5 dark:border-red-500/15',
+  purple: 'bg-purple-50/60 border-purple-200/40 dark:bg-purple-500/5 dark:border-purple-500/15',
+};
+
+export function StatCard({ label, value, delta, spark, indicator, tint }: StatCardProps) {
   return (
-    <Card className="p-4">
+    <Card className={cn('p-4', tint && tintClasses[tint])}>
       <div className="flex items-center justify-between">
         <span className="text-xs font-medium text-muted">{label}</span>
         {indicator && (

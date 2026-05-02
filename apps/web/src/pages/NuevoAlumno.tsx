@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Check, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Camera, Check, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -85,6 +85,16 @@ export function NuevoAlumno() {
       <Card className="p-6">
         {step === 1 && (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2 flex justify-center pb-2">
+              <button
+                type="button"
+                className="group relative flex size-24 items-center justify-center rounded-full border-2 border-dashed border-border bg-bg/50 text-muted transition-colors hover:border-accent hover:text-accent"
+                aria-label="Subir foto del alumno"
+              >
+                <Camera className="h-6 w-6" strokeWidth={1.5} />
+                <span className="absolute -bottom-5 text-2xs text-muted group-hover:text-accent">Subir foto</span>
+              </button>
+            </div>
             <Field label="RUN del alumno">
               <Input value={form.run} onChange={(e) => update('run', e.target.value)} placeholder="22.123.456-7" />
             </Field>
