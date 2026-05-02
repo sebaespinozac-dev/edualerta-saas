@@ -67,250 +67,82 @@
   }
 }
 
-/* ===== Login Animated Scene ===== */
+/* ===== Login — Professional Animated Scene ===== */
 
-.login-scene {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
+.login-scene-wrap {
+  background: #1a2e5a;
 }
 
-/* Sky gradient — top celeste to horizon warm */
-.login-sky {
+/* Sky + ground gradient — seamless */
+.login-bg {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    180deg,
-    #87CEEB 0%,
-    #B0E0F6 30%,
-    #D4EDFC 50%,
-    #E8F5E9 70%,
-    #66BB6A 85%,
-    #43A047 100%
+    175deg,
+    #7EC8E3 0%,
+    #A8DCF0 25%,
+    #C5E8F7 40%,
+    #D6F0D6 55%,
+    #6ABF69 68%,
+    #4CAF50 75%,
+    #3D9140 85%,
+    #2E7D32 100%
   );
 }
 
-/* Sun glow */
-.login-sun {
+/* Clouds — subtle, slow, semi-transparent blurs */
+.login-cloud-a,
+.login-cloud-b,
+.login-cloud-c {
   position: absolute;
-  top: 8%;
-  right: 18%;
-  width: 80px;
-  height: 80px;
   border-radius: 50%;
-  background: radial-gradient(circle, #FFF9C4 0%, #FFF176 40%, transparent 70%);
-  box-shadow: 0 0 60px 30px rgba(255,241,118,0.3);
-  animation: sunPulse 4s ease-in-out infinite;
+  background: rgba(255,255,255,0.45);
+  filter: blur(18px);
+}
+.login-cloud-a {
+  width: 280px; height: 50px;
+  top: 10%; left: 8%;
+  animation: cloudGlide 80s linear infinite;
+}
+.login-cloud-b {
+  width: 220px; height: 40px;
+  top: 18%; left: 45%;
+  animation: cloudGlide 100s linear infinite;
+}
+.login-cloud-c {
+  width: 200px; height: 35px;
+  top: 6%; right: 10%;
+  animation: cloudGlide 90s linear infinite reverse;
 }
 
-@keyframes sunPulse {
-  0%, 100% { transform: scale(1); opacity: 0.9; }
-  50% { transform: scale(1.1); opacity: 1; }
+@keyframes cloudGlide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(120px); }
 }
 
-/* Clouds */
-.login-cloud {
+/* School image — integrated with transparent background */
+.login-hero-img {
   position: absolute;
-  opacity: 0.85;
-}
-.login-cloud-1 {
-  width: 220px;
-  top: 6%;
-  left: -60px;
-  animation: cloudDrift1 25s linear infinite;
-}
-.login-cloud-2 {
-  width: 180px;
-  top: 14%;
-  left: 30%;
-  animation: cloudDrift2 35s linear infinite;
-}
-.login-cloud-3 {
-  width: 150px;
-  top: 22%;
-  left: 60%;
-  animation: cloudDrift3 30s linear infinite;
-}
-
-@keyframes cloudDrift1 {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(100vw + 220px)); }
-}
-@keyframes cloudDrift2 {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(100vw + 180px)); }
-}
-@keyframes cloudDrift3 {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-100vw - 150px)); }
-}
-
-/* Green ground — expands to all sides */
-.login-ground {
-  position: absolute;
-  bottom: 0;
-  left: -10%;
-  right: -10%;
-  height: 35%;
-  background: linear-gradient(180deg, #4CAF50 0%, #388E3C 40%, #2E7D32 100%);
-  border-radius: 50% 50% 0 0 / 30% 30% 0 0;
-}
-.login-ground-overlay {
-  position: absolute;
-  bottom: 0;
-  left: -5%;
-  right: -5%;
-  height: 20%;
-  background: linear-gradient(180deg, transparent 0%, rgba(46,125,50,0.4) 100%);
-}
-
-/* School building */
-.login-school-wrapper {
-  position: absolute;
-  bottom: 18%;
+  bottom: 20%;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 5;
-  animation: schoolFloat 6s ease-in-out infinite;
+  z-index: 3;
+  pointer-events: none;
 }
-.login-school-img {
-  width: 340px;
-  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
-}
-
-@keyframes schoolFloat {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-6px); }
+.login-hero-img img {
+  width: 380px;
+  max-width: 55vw;
+  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.2));
 }
 
-/* Trees — animated sway */
-.login-tree {
-  position: absolute;
-  z-index: 4;
-  transform-origin: bottom center;
-}
-.login-tree-left-1 {
-  width: 80px;
-  bottom: 22%;
-  left: 6%;
-  animation: treeSway 4s ease-in-out infinite;
-}
-.login-tree-left-2 {
-  width: 60px;
-  bottom: 20%;
-  left: 16%;
-  animation: treeSway 5s ease-in-out infinite 0.5s;
-}
-.login-tree-right-1 {
-  width: 80px;
-  bottom: 22%;
-  right: 6%;
-  animation: treeSway 4.5s ease-in-out infinite 1s;
-}
-.login-tree-right-2 {
-  width: 60px;
-  bottom: 20%;
-  right: 16%;
-  animation: treeSway 5.5s ease-in-out infinite 0.3s;
-}
-
-@keyframes treeSway {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(1.5deg); }
-  75% { transform: rotate(-1.5deg); }
-}
-
-/* Bushes */
-.login-bush {
-  position: absolute;
-  z-index: 6;
-}
-.login-bush-1 {
-  width: 70px;
-  bottom: 26%;
-  left: 25%;
-  animation: treeSway 6s ease-in-out infinite 0.8s;
-}
-.login-bush-2 {
-  width: 60px;
-  bottom: 25%;
-  right: 22%;
-  animation: treeSway 7s ease-in-out infinite 1.2s;
-}
-
-/* Flag pole + waving flag */
-.login-flag-pole {
-  position: absolute;
-  bottom: 30%;
-  right: 28%;
-  z-index: 7;
-  width: 3px;
-  height: 100px;
-  background: linear-gradient(180deg, #E0E0E0 0%, #9E9E9E 100%);
-  border-radius: 2px;
-}
-.login-flag-pole::before {
-  content: '';
-  position: absolute;
-  top: -4px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #FFD700;
-}
-.login-flag-svg {
-  position: absolute;
-  top: 2px;
-  left: 3px;
-  width: 50px;
-  height: 34px;
-  animation: flagWave 2s ease-in-out infinite;
-}
-
-@keyframes flagWave {
-  0% { transform: skewY(0deg) scaleX(1); }
-  25% { transform: skewY(-1deg) scaleX(0.97); }
-  50% { transform: skewY(0.5deg) scaleX(1.01); }
-  75% { transform: skewY(-0.5deg) scaleX(0.99); }
-  100% { transform: skewY(0deg) scaleX(1); }
-}
-
-.login-flag-wave {
-  animation: flagPath 3s ease-in-out infinite;
-}
-
-/* Bell animation */
-.login-bell-anim {
-  position: absolute;
-  top: 40%;
-  left: 22%;
-  z-index: 8;
-  animation: bellRing 3s ease-in-out infinite;
-}
-.login-bell-dot {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #EF4444;
-  border: 2px solid white;
-  animation: bellDotPulse 2s ease-in-out infinite;
-}
-
-@keyframes bellRing {
-  0%, 100% { transform: rotate(0deg); }
-  10% { transform: rotate(12deg); }
-  20% { transform: rotate(-10deg); }
-  30% { transform: rotate(8deg); }
-  40% { transform: rotate(-5deg); }
-  50% { transform: rotate(0deg); }
-}
-
-@keyframes bellDotPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.3); }
+/* Stat cards — glassmorphism */
+.login-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
 }

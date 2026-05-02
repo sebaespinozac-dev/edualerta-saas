@@ -4,7 +4,7 @@ export function Logo({ className, showWordmark = true, size = 24 }: { className?
   return (
     <div className={cn('inline-flex items-center gap-2', className)}>
       <img
-        src="/logo-programa.jpg"
+        src="/logo-programa.png"
         alt="EduAlerta"
         style={{ width: size, height: size }}
         className="rounded object-contain"
