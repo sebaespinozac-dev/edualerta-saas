@@ -22,10 +22,17 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       {/* header */}
-      <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-xl font-semibold tracking-tight text-text">Overview</h1>
-          <p className="text-xs text-muted">Resumen operativo · CMDS Antofagasta</p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-4">
+          <img
+            src="/logo-programa.jpg"
+            alt="EduAlerta"
+            className="hidden h-16 w-auto drop-shadow-sm sm:block"
+          />
+          <div>
+            <h1 className="text-xl font-semibold tracking-tight text-text">Overview</h1>
+            <p className="text-xs text-muted">Resumen operativo · CMDS Antofagasta</p>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Button variant="secondary" size="sm">
