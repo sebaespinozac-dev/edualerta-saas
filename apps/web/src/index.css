@@ -67,336 +67,132 @@
   }
 }
 
-/* ===== Login — Premium Immersive Scene ===== */
+/* ===== Login — Unified Campus Scene ===== */
+/*
+ * Colors sampled directly from the school illustration:
+ *   Grass:  #608211 (light) → #5d7e13 (mid) → #3e550d (dark)
+ *   Path:   #ead6bb (light) → #ecd7ba (mid) → #bd9b76 (dark)
+ *   Canopy: #173d00 (dark) → #5f8317 (mid) → #698908 (light)
+ *   Trunk:  #5b5a55
+ *   Sky:    matches illustration's neutral warm white
+ */
 
-:root {
-  /* Scene palette */
-  --login-sky-top: #7EC8E3;
-  --login-sky-mid: #A8DCF0;
-  --login-sky-low: #C5E8F7;
-  --login-grass-light: #4CAF50;
-  --login-grass-mid: #388E3C;
-  --login-grass-dark: #2E7D32;
-  --login-path-light: #D4C4A8;
-  --login-path-dark: #C4B393;
-  --login-shadow: rgba(0, 0, 0, 0.1);
-  --login-trunk: #5D4037;
-  --login-trunk-dark: #4E342E;
-  --login-canopy-light: #43A047;
-  --login-canopy-mid: #2E7D32;
-  --login-canopy-dark: #1B5E20;
-  --login-sunrise: rgba(255, 183, 77, 0.25);
-}
-
-/* ---- Container ---- */
-.login-scene-wrap {
-  background: var(--login-sky-top);
-}
-
-/* ---- Sky gradient ---- */
-.login-sky {
-  position: absolute;
-  inset: 0;
+.login-scene {
   background: linear-gradient(
     180deg,
-    var(--login-sky-top) 0%,
-    var(--login-sky-mid) 28%,
-    var(--login-sky-low) 48%,
-    #daf0dc 56%
+    #e8f0e4 0%,
+    #d5e4cc 20%,
+    #6a8a14 40%,
+    #608211 50%,
+    #5a7c10 70%,
+    #4a6b0e 100%
   );
 }
 
-/* ---- Atmospheric depth fog ---- */
-.login-depth-fog {
+/* Full-width grass plane — exact same green as the illustration lawn */
+.login-grass {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 1;
   background: linear-gradient(
     180deg,
-    rgba(197, 232, 247, 0) 0%,
-    rgba(197, 232, 247, 0.35) 38%,
-    rgba(197, 232, 247, 0.15) 50%,
-    rgba(46, 125, 50, 0) 65%
+    transparent 0%,
+    transparent 30%,
+    #6a8a14 35%,
+    #608211 45%,
+    #5a7c10 60%,
+    #4e6d0d 80%,
+    #3e550d 100%
   );
-  pointer-events: none;
 }
 
-/* ---- Sunrise warm glow ---- */
-.login-sunrise-glow {
-  position: absolute;
-  top: 15%;
-  left: 50%;
-  width: 80%;
-  height: 40%;
-  transform: translateX(-50%);
-  background: radial-gradient(ellipse at center, var(--login-sunrise) 0%, transparent 70%);
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* ---- Clouds — blurred ellipses, very slow ---- */
-.login-cloud {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.35);
-  z-index: 3;
-  pointer-events: none;
-}
-.login-cloud-a {
-  width: 320px;
-  height: 45px;
-  top: 6%;
-  left: 5%;
-  filter: blur(22px);
-  animation: loginCloudDrift 100s ease-in-out infinite alternate;
-}
-.login-cloud-b {
-  width: 240px;
-  height: 38px;
-  top: 14%;
-  left: 40%;
-  filter: blur(26px);
-  opacity: 0.7;
-  animation: loginCloudDrift 120s ease-in-out infinite alternate-reverse;
-}
-.login-cloud-c {
-  width: 200px;
-  height: 32px;
-  top: 3%;
-  right: 8%;
-  filter: blur(20px);
-  opacity: 0.5;
-  animation: loginCloudDrift 90s ease-in-out infinite alternate;
-}
-.login-cloud-d {
-  width: 180px;
-  height: 28px;
-  top: 20%;
-  left: 20%;
-  filter: blur(28px);
-  opacity: 0.4;
-  animation: loginCloudDrift 110s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes loginCloudDrift {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(80px); }
-}
-
-/* ---- Ground / grass plane — full width ---- */
-.login-ground {
+/* Perspective walkway — same tile color as the school entrance */
+.login-walkway {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: 52%;
+  left: 50%;
+  width: 100%;
+  height: 60%;
+  transform: translateX(-50%);
+  z-index: 2;
+  clip-path: polygon(47.5% 5%, 52.5% 5%, 78% 100%, 22% 100%);
+  background: linear-gradient(
+    180deg,
+    #ead6bb 0%,
+    #e4ccaa 20%,
+    #dcc2a0 40%,
+    #cdb08c 70%,
+    #bd9b76 100%
+  );
+}
+
+/* Tile grid lines on the walkway */
+.login-walkway-lines {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  height: 60%;
+  transform: translateX(-50%);
+  z-index: 3;
+  clip-path: polygon(47.5% 5%, 52.5% 5%, 78% 100%, 22% 100%);
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(0,0,0,0.04) 0px,
+      rgba(0,0,0,0.04) 1px,
+      transparent 1px,
+      transparent 18px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,0.03) 0px,
+      rgba(0,0,0,0.03) 1px,
+      transparent 1px,
+      transparent 32px
+    );
+  pointer-events: none;
+}
+
+/* Atmospheric depth — soft haze at horizon */
+.login-atmosphere {
+  position: absolute;
+  inset: 0;
   z-index: 4;
   background: linear-gradient(
     180deg,
-    var(--login-grass-light) 0%,
-    var(--login-grass-mid) 40%,
-    var(--login-grass-dark) 100%
+    rgba(232, 240, 228, 0.6) 0%,
+    rgba(213, 228, 204, 0.3) 25%,
+    transparent 40%,
+    transparent 100%
   );
-}
-
-/* ---- Perspective path — widens toward viewer ---- */
-.login-path {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 100%;
-  height: 52%;
-  transform: translateX(-50%);
-  z-index: 5;
-  clip-path: polygon(46% 0%, 54% 0%, 85% 100%, 15% 100%);
-  background: linear-gradient(
-    180deg,
-    var(--login-path-light) 0%,
-    var(--login-path-dark) 60%,
-    #b8a685 100%
-  );
-}
-
-/* Path center dashed line */
-.login-path-line {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 100%;
-  height: 52%;
-  transform: translateX(-50%);
-  z-index: 5;
-  clip-path: polygon(49.6% 0%, 50.4% 0%, 50.8% 100%, 49.2% 100%);
-  background: repeating-linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.25) 0px,
-    rgba(255, 255, 255, 0.25) 12px,
-    transparent 12px,
-    transparent 28px
-  );
-}
-
-/* ---- Trees — CSS shapes ---- */
-.login-tree {
-  position: absolute;
-  z-index: 6;
   pointer-events: none;
 }
 
-.login-tree__trunk {
+/* School — anchored to ground, centered, no floating */
+.login-school {
   position: absolute;
-  bottom: 0;
+  z-index: 8;
   left: 50%;
-  transform: translateX(-50%);
-  width: 12px;
-  height: 50px;
-  background: linear-gradient(90deg, var(--login-trunk) 0%, var(--login-trunk-dark) 100%);
-  border-radius: 2px;
-}
-
-.login-tree__canopy {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 35px;
-  width: 0;
-  height: 0;
-  border-left: 36px solid transparent;
-  border-right: 36px solid transparent;
-  border-bottom: 60px solid var(--login-canopy-mid);
-}
-.login-tree__canopy--mid {
-  bottom: 58px;
-  border-left-width: 30px;
-  border-right-width: 30px;
-  border-bottom-width: 50px;
-  border-bottom-color: var(--login-canopy-light);
-}
-.login-tree__canopy--top {
-  bottom: 78px;
-  border-left-width: 22px;
-  border-right-width: 22px;
-  border-bottom-width: 40px;
-  border-bottom-color: var(--login-canopy-dark);
-}
-
-/* Left trees — organic, some clipped by frame */
-.login-tree--left-1 {
-  bottom: 50%;
-  left: 12%;
-  transform: scale(1.1);
-  filter: blur(0.4px) brightness(0.92);
-}
-.login-tree--left-2 {
-  bottom: 38%;
-  left: 5%;
-  transform: scale(1.4);
-  filter: blur(0.2px);
-}
-.login-tree--left-3 {
-  bottom: 18%;
-  left: -2%;
-  transform: scale(1.8);
-}
-.login-tree--left-4 {
-  bottom: 6%;
-  left: 8%;
-  transform: scale(2.2);
-  filter: blur(0.1px);
-}
-
-/* Right trees */
-.login-tree--right-1 {
-  bottom: 48%;
-  right: 15%;
-  left: auto;
-  transform: scale(1.0) scaleX(-1);
-  filter: blur(0.4px) brightness(0.92);
-}
-.login-tree--right-2 {
   bottom: 32%;
-  right: 3%;
-  left: auto;
-  transform: scale(1.5) scaleX(-1);
-  filter: blur(0.2px);
-}
-.login-tree--right-3 {
-  bottom: 10%;
-  right: -1%;
-  left: auto;
-  transform: scale(2.0) scaleX(-1);
-}
-
-/* ---- Tree shadows on ground ---- */
-.login-shadow {
-  position: absolute;
-  z-index: 5;
-  background: var(--login-shadow);
-  border-radius: 50%;
-  pointer-events: none;
-}
-.login-shadow--left-1 {
-  bottom: 49%;
-  left: 8%;
-  width: 80px;
-  height: 10px;
-  transform: skewX(-20deg);
-  filter: blur(4px);
-  opacity: 0.6;
-}
-.login-shadow--left-3 {
-  bottom: 16%;
-  left: -1%;
-  width: 140px;
-  height: 16px;
-  transform: skewX(-15deg);
-  filter: blur(6px);
-  opacity: 0.5;
-}
-.login-shadow--right-1 {
-  bottom: 47%;
-  right: 11%;
-  width: 70px;
-  height: 9px;
-  transform: skewX(20deg);
-  filter: blur(4px);
-  opacity: 0.6;
-}
-.login-shadow--right-3 {
-  bottom: 8%;
-  right: -1%;
-  width: 130px;
-  height: 14px;
-  transform: skewX(15deg);
-  filter: blur(6px);
-  opacity: 0.5;
-}
-
-/* ---- School image — centered anchor ---- */
-.login-hero-img {
-  position: absolute;
-  bottom: 42%;
-  left: 50%;
   transform: translateX(-50%);
-  z-index: 7;
   pointer-events: none;
 }
-.login-hero-img img {
-  width: 340px;
-  max-width: 50vw;
-  filter:
-    drop-shadow(0 8px 24px rgba(0, 0, 0, 0.18))
-    drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
+.login-school img {
+  width: 420px;
+  max-width: 60vw;
+  display: block;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.12));
 }
 
-/* ---- Stat cards — glassmorphism ---- */
-.login-stat-card {
+/* Stat pills — glassmorphism */
+.login-stat-pill {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 8px 14px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255,255,255,0.12);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255,255,255,0.15);
 }
