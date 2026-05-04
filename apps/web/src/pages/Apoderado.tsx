@@ -62,6 +62,54 @@ const mockNotifications = [
   },
 ];
 
+const recentAttendanceLog = [
+  { id: 1, date: '02/05/2026', time: '07:58', type: 'Entrada' as const, who: 'Sistema biometrico' },
+  { id: 2, date: '30/04/2026', time: '15:30', type: 'Salida' as const, who: 'Sistema biometrico' },
+  { id: 3, date: '30/04/2026', time: '07:55', type: 'Entrada' as const, who: 'Sistema biometrico' },
+  { id: 4, date: '29/04/2026', time: '11:30', type: 'Retiro' as const, who: 'Maria Gonzalez (apoderada)' },
+  { id: 5, date: '29/04/2026', time: '08:02', type: 'Entrada' as const, who: 'Sistema biometrico' },
+];
+
+const inspectoriaNotices = [
+  {
+    id: 1,
+    date: '30/04/2026',
+    title: 'Citacion apoderado',
+    description: 'Reunion con profesor jefe el 05/05/2026 a las 16:00 hrs.',
+    severity: 'warning' as const,
+  },
+  {
+    id: 2,
+    date: '28/04/2026',
+    title: 'Uniforme incompleto',
+    description: 'El alumno asistio sin buzo deportivo en clase de educacion fisica.',
+    severity: 'info' as const,
+  },
+];
+
+function typeBadgeSmall(type: 'Entrada' | 'Salida' | 'Retiro') {
+  if (type === 'Entrada')
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-2xs font-medium text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+        <span className="size-1 rounded-full bg-emerald-500" />
+        {type}
+      </span>
+    );
+  if (type === 'Salida')
+    return (
+      <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-2xs font-medium text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
+        <span className="size-1 rounded-full bg-blue-500" />
+        {type}
+      </span>
+    );
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-2xs font-medium text-amber-700 dark:bg-amber-500/10 dark:text-amber-400">
+      <span className="size-1 rounded-full bg-amber-500" />
+      {type}
+    </span>
+  );
+}
+
 function NotificationIcon({ kind }: { kind: 'entrada' | 'retiro' | 'alerta' }) {
   if (kind === 'entrada') {
     return (
@@ -227,6 +275,63 @@ export function Apoderado() {
                 <div className="min-w-0 flex-1">
                   <div className="text-xs text-text">{n.message}</div>
                   <div className="text-2xs text-muted">{n.time}</div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </Card>
+
+        {/* Recent attendance log */}
+        <Card className="overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
+            <div className="flex items-center gap-2">
+              <ClipboardList className="h-3.5 w-3.5 text-muted" strokeWidth={1.75} />
+              <span className="text-xs font-semibold text-text">Registro de asistencia reciente</span>
+            </div>
+          </div>
+          <ul className="divide-y divide-border">
+            {recentAttendanceLog.map((row) => (
+              <li key={row.id} className="flex items-center justify-between px-4 py-2.5">
+                <div className="flex items-center gap-3 min-w-0">
+                  <span className="text-2xs text-muted tabular whitespace-nowrap">{row.date} {row.time}</span>
+                  {typeBadgeSmall(row.type)}
+                </div>
+                <span className="text-2xs text-muted truncate ml-2 max-w-[120px]">{row.who}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="border-t border-border px-4 py-2.5">
+            <Link
+              to={`/alumnos/${child.id}`}
+              className="inline-flex items-center gap-1.5 text-2xs font-medium text-accent hover:underline"
+            >
+              <ExternalLink className="h-3 w-3" strokeWidth={1.75} />
+              Ver ficha completa
+            </Link>
+          </div>
+        </Card>
+
+        {/* Avisos de Inspectoria */}
+        <Card className="overflow-hidden">
+          <div className="border-b border-border px-4 py-2.5 text-xs font-semibold text-text">
+            Avisos de Inspectoria
+          </div>
+          <ul className="divide-y divide-border">
+            {inspectoriaNotices.map((notice) => (
+              <li key={notice.id} className="px-4 py-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-medium text-text">{notice.title}</span>
+                      {notice.severity === 'warning' ? (
+                        <span className="inline-flex items-center rounded border border-amber-500/30 px-1.5 h-5 text-2xs font-medium text-amber-600 dark:text-amber-400">Aviso</span>
+                      ) : (
+                        <span className="inline-flex items-center rounded border border-accent/30 px-1.5 h-5 text-2xs font-medium text-accent dark:text-accent/90">Info</span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-2xs text-muted leading-relaxed">{notice.description}</p>
+                  </div>
+                  <span className="flex-none text-2xs text-muted tabular">{notice.date}</span>
                 </div>
               </li>
             ))}

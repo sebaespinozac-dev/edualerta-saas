@@ -17,6 +17,7 @@ import studentsRoutes from './modules/students/students.routes';
 import attendanceRoutes from './modules/attendance/attendance.routes';
 import alertsRoutes from './modules/alerts/alerts.routes';
 import reportsRoutes from './modules/reports/reports.routes';
+import notificationsRoutes from './modules/notifications/notifications.routes';
 
 export function createApp(): Application {
   const app = express();
@@ -66,6 +67,7 @@ export function createApp(): Application {
   api.use('/attendance', attendanceRoutes);
   api.use('/alerts', alertsRoutes);
   api.use('/reports', reportsRoutes);
+  api.use('/notifications', notificationsRoutes);
   app.use('/api/v1', api);
 
   // Errors

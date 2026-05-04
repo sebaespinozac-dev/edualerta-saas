@@ -32,7 +32,7 @@ const mapOptions: google.maps.MapOptions = {
 function MapFallback() {
   return (
     <Card className="overflow-hidden">
-      <div className="flex h-[600px] flex-col items-center justify-center gap-4 bg-gray-50 p-8 text-center">
+      <div className="flex h-[600px] flex-col items-center justify-center gap-4 bg-bg p-8 text-center">
         <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
           <MapPin className="h-7 w-7" strokeWidth={1.5} />
         </div>

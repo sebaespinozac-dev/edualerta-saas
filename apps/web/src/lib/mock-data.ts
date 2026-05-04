@@ -4,21 +4,21 @@ const now = Date.now();
 const minutes = (m: number) => new Date(now - m * 60_000).toISOString();
 
 export const schools: School[] = [
-  { rbd: 12634, name: 'Liceo A-12 Jeraldo Muñoz Campos', type: 'Media', students: 1240, lat: -23.6445, lng: -70.3978, attendance: 95.1, status: 'operativo', lastActivity: minutes(2) },
-  { rbd: 12636, name: 'Liceo A-14 Técnico Profesional', type: 'Media', students: 980, lat: -23.6489, lng: -70.3961, attendance: 93.4, status: 'operativo', lastActivity: minutes(5) },
-  { rbd: 12637, name: 'Liceo A-15 Mario Bahamonde Silva', type: 'Media', students: 870, lat: -23.6812, lng: -70.4089, attendance: 91.8, status: 'operativo', lastActivity: minutes(8) },
-  { rbd: 12640, name: 'Escuela D-68 Juan Sandoval Carrasco', type: 'Básica', students: 560, lat: -23.6521, lng: -70.3994, attendance: 96.2, status: 'operativo', lastActivity: minutes(3) },
-  { rbd: 12642, name: 'Escuela D-73 República de Estados Unidos', type: 'Básica', students: 490, lat: -23.6502, lng: -70.3982, attendance: 94.7, status: 'operativo', lastActivity: minutes(11) },
-  { rbd: 12645, name: 'Escuela D-75 Japón', type: 'Básica', students: 410, lat: -23.7145, lng: -70.4201, attendance: 95.5, status: 'operativo', lastActivity: minutes(14) },
-  { rbd: 12650, name: 'Escuela D-85 Arturo Prat Chacón', type: 'Básica', students: 380, lat: -23.6678, lng: -70.4045, attendance: 92.9, status: 'operativo', lastActivity: minutes(17) },
-  { rbd: 12655, name: 'Escuela D-90 República de Croacia', type: 'Básica', students: 340, lat: -23.7023, lng: -70.4178, attendance: 93.8, status: 'operativo', lastActivity: minutes(22) },
-  { rbd: 12660, name: 'Escuela D-94 Santiago Amengual', type: 'Básica', students: 310, lat: -23.6934, lng: -70.4134, attendance: 94.1, status: 'operativo', lastActivity: minutes(28) },
-  { rbd: 12665, name: 'Escuela D-97 República de Grecia', type: 'Básica', students: 290, lat: -23.6534, lng: -70.4001, attendance: 95.0, status: 'operativo', lastActivity: minutes(31) },
-  { rbd: 13001, name: 'Jardín Infantil Los Pollitos', type: 'Párvulo', students: 180, lat: -23.7089, lng: -70.4189, attendance: 89.3, status: 'operativo', lastActivity: minutes(35) },
-  { rbd: 13005, name: 'Jardín Infantil Caracolito', type: 'Párvulo', students: 160, lat: -23.6712, lng: -70.4067, attendance: 90.6, status: 'operativo', lastActivity: minutes(40) },
-  { rbd: 13010, name: 'Jardín Infantil Caballito de Mar', type: 'Párvulo', students: 140, lat: -23.6623, lng: -70.4034, attendance: 91.2, status: 'operativo', lastActivity: minutes(44) },
-  { rbd: 13015, name: 'Jardín Infantil Semillita', type: 'Párvulo', students: 130, lat: -23.6756, lng: -70.4078, attendance: 88.4, status: 'operativo', lastActivity: minutes(48) },
-  { rbd: 13020, name: 'Escuela Especial Arbolia', type: 'Especial', students: 120, lat: -23.7201, lng: -70.4234, attendance: 92.0, status: 'operativo', lastActivity: minutes(52) },
+  { rbd: 12634, name: 'Liceo A-12 Jeraldo Muñoz Campos', type: 'Media', students: 1240, lat: -23.6348, lng: -70.3882, attendance: 95.1, status: 'operativo', lastActivity: minutes(2) },
+  { rbd: 12636, name: 'Liceo A-14 Técnico Profesional', type: 'Media', students: 980, lat: -23.6512, lng: -70.3955, attendance: 93.4, status: 'operativo', lastActivity: minutes(5) },
+  { rbd: 12637, name: 'Liceo A-15 Mario Bahamonde Silva', type: 'Media', students: 870, lat: -23.6425, lng: -70.3960, attendance: 91.8, status: 'operativo', lastActivity: minutes(8) },
+  { rbd: 12640, name: 'Escuela D-68 Juan Sandoval Carrasco', type: 'Básica', students: 560, lat: -23.6280, lng: -70.3920, attendance: 96.2, status: 'operativo', lastActivity: minutes(3) },
+  { rbd: 12642, name: 'Escuela D-73 República de Estados Unidos', type: 'Básica', students: 490, lat: -23.6570, lng: -70.3975, attendance: 94.7, status: 'operativo', lastActivity: minutes(11) },
+  { rbd: 12645, name: 'Escuela D-75 Japón', type: 'Básica', students: 410, lat: -23.6190, lng: -70.3895, attendance: 95.5, status: 'operativo', lastActivity: minutes(14) },
+  { rbd: 12650, name: 'Escuela D-85 Arturo Prat Chacón', type: 'Básica', students: 380, lat: -23.6480, lng: -70.3940, attendance: 92.9, status: 'operativo', lastActivity: minutes(17) },
+  { rbd: 12655, name: 'Escuela D-90 República de Croacia', type: 'Básica', students: 340, lat: -23.7010, lng: -70.4050, attendance: 93.8, status: 'operativo', lastActivity: minutes(22) },
+  { rbd: 12660, name: 'Escuela D-94 Santiago Amengual', type: 'Básica', students: 310, lat: -23.6155, lng: -70.3870, attendance: 94.1, status: 'operativo', lastActivity: minutes(28) },
+  { rbd: 12665, name: 'Escuela D-97 República de Grecia', type: 'Básica', students: 290, lat: -23.6650, lng: -70.3985, attendance: 95.0, status: 'operativo', lastActivity: minutes(31) },
+  { rbd: 13001, name: 'Jardín Infantil Los Pollitos', type: 'Párvulo', students: 180, lat: -23.6100, lng: -70.3855, attendance: 89.3, status: 'operativo', lastActivity: minutes(35) },
+  { rbd: 13005, name: 'Jardín Infantil Caracolito', type: 'Párvulo', students: 160, lat: -23.6320, lng: -70.3900, attendance: 90.6, status: 'operativo', lastActivity: minutes(40) },
+  { rbd: 13010, name: 'Jardín Infantil Caballito de Mar', type: 'Párvulo', students: 140, lat: -23.6720, lng: -70.4010, attendance: 91.2, status: 'operativo', lastActivity: minutes(44) },
+  { rbd: 13015, name: 'Jardín Infantil Semillita', type: 'Párvulo', students: 130, lat: -23.6900, lng: -70.4030, attendance: 88.4, status: 'operativo', lastActivity: minutes(48) },
+  { rbd: 13020, name: 'Escuela Especial Arbolia', type: 'Especial', students: 120, lat: -23.6460, lng: -70.3965, attendance: 92.0, status: 'operativo', lastActivity: minutes(52) },
 ];
 
 export const totalStudents = schools.reduce((acc, s) => acc + s.students, 0);
