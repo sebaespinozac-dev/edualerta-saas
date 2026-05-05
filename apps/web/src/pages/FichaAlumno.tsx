@@ -285,6 +285,33 @@ export function FichaAlumno() {
         <TabsContent value="documents" className="mt-4">
           <Card className="overflow-hidden">
             <div className="border-b border-border px-4 py-2.5 text-xs font-semibold text-text">
+              Código QR del alumno
+            </div>
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="flex size-8 flex-none items-center justify-center rounded-md border border-border bg-bg text-muted">
+                  <FileText className="h-4 w-4" strokeWidth={1.5} />
+                </div>
+                <div>
+                  <div className="text-xs font-medium text-text">QR de acceso al establecimiento</div>
+                  <div className="text-2xs text-muted">Para portería — escanear al ingreso/salida</div>
+                </div>
+              </div>
+              <a
+                href={`/api/v1/students/${student.id}/qr?format=png`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-7 items-center gap-1.5 rounded-md px-2.5 text-xs font-medium text-muted hover:bg-bg hover:text-text transition-colors"
+                aria-label="Descargar QR"
+              >
+                <Download className="h-3.5 w-3.5" strokeWidth={1.75} />
+                Descargar
+              </a>
+            </div>
+          </Card>
+
+          <Card className="overflow-hidden mt-4">
+            <div className="border-b border-border px-4 py-2.5 text-xs font-semibold text-text">
               Documentos compartidos
             </div>
             <ul className="divide-y divide-border">

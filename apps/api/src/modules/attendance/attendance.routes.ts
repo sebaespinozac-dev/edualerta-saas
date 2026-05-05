@@ -4,6 +4,7 @@ import { db } from '../../lib/db';
 import { authenticate } from '../../middleware/auth';
 import { validate } from '../../middleware/validate';
 import { HttpError } from '../../middleware/errorHandler';
+import { getIO } from '../../lib/socket';
 
 const router = Router();
 router.use(authenticate);
@@ -58,10 +59,19 @@ router.post('/check-in', validate(checkInSchema), async (req, res, next) => {
       ],
     );
 
-    res.status(201).json({
+    const payload = {
       ...row,
       student: { id: student.id, full_name: student.full_name },
-    });
+    };
+
+    try {
+      const io = getIO();
+      io.of('/realtime')
+        .to(`org:${req.user!.org}`)
+        .emit('attendance', payload);
+    } catch { /* socket may not be initialized in tests */ }
+
+    res.status(201).json(payload);
   } catch (err) {
     next(err);
   }

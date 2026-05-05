@@ -1,5 +1,5 @@
-import { Search, Sun, Moon, LogOut, ChevronDown } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, Sun, Moon, LogOut, ChevronDown, Bell } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
 import { Logo } from './Logo';
 import { Kbd } from '@/components/ui/Kbd';
 import { Avatar } from '@/components/ui/Avatar';
@@ -12,11 +12,13 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/DropdownMenu';
 import { useTheme } from '@/hooks/useTheme';
+import { useRealtime } from '@/context/RealtimeContext';
 
 export function TopNav() {
   const { theme, toggle } = useTheme();
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { unreadAlerts, clearUnread } = useRealtime();
 
   return (
     <header className="sticky top-0 z-20 flex h-12 items-center justify-between border-b border-border bg-surface/80 px-4 backdrop-blur">
@@ -38,6 +40,21 @@ export function TopNav() {
       </div>
 
       <div className="flex items-center gap-1.5">
+        {/* Alert bell */}
+        <Link
+          to="/alertas"
+          onClick={clearUnread}
+          className="relative inline-flex h-8 w-8 items-center justify-center rounded-md text-muted transition-colors hover:bg-bg hover:text-text"
+          aria-label="Ver alertas"
+        >
+          <Bell className="h-4 w-4" strokeWidth={1.75} />
+          {unreadAlerts > 0 && (
+            <span className="absolute right-1 top-1 flex h-3.5 min-w-[14px] items-center justify-center rounded-full bg-red-500 px-0.5 text-[9px] font-bold leading-none text-white">
+              {unreadAlerts > 9 ? '9+' : unreadAlerts}
+            </span>
+          )}
+        </Link>
+
         <button
           onClick={toggle}
           aria-label="Cambiar tema"

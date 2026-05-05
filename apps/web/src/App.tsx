@@ -10,6 +10,7 @@ import { Reportes } from '@/pages/Reportes';
 import { Configuracion } from '@/pages/Configuracion';
 import { FichaAlumno } from '@/pages/FichaAlumno';
 import { Mensajes } from '@/pages/Mensajes';
+import { Scanner } from '@/pages/Scanner';
 import { AppShell } from '@/components/layout/AppShell';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -32,6 +33,7 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
+      <Route path="/scanner" element={<Protected><Scanner /></Protected>} />
       <Route path="/alumnos" element={<Protected><Alumnos /></Protected>} />
       <Route path="/alumnos/nuevo" element={<Protected><NuevoAlumno /></Protected>} />
       <Route path="/alumnos/:id" element={<Protected><FichaAlumno /></Protected>} />
