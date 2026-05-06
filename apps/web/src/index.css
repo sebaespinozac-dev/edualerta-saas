@@ -67,132 +67,81 @@
   }
 }
 
-/* ===== Login — Unified Campus Scene ===== */
-/*
- * Colors sampled directly from the school illustration:
- *   Grass:  #608211 (light) → #5d7e13 (mid) → #3e550d (dark)
- *   Path:   #ead6bb (light) → #ecd7ba (mid) → #bd9b76 (dark)
- *   Canopy: #173d00 (dark) → #5f8317 (mid) → #698908 (light)
- *   Trunk:  #5b5a55
- *   Sky:    matches illustration's neutral warm white
- */
+/* ===== Login — Hero Panel (SaaS Premium) ===== */
 
-.login-scene {
-  background: linear-gradient(
-    180deg,
-    #e8f0e4 0%,
-    #d5e4cc 20%,
-    #6a8a14 40%,
-    #608211 50%,
-    #5a7c10 70%,
-    #4a6b0e 100%
-  );
+.login-panel {
+  min-height: 100vh;
 }
 
-/* Full-width grass plane — exact same green as the illustration lawn */
-.login-grass {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    transparent 30%,
-    #6a8a14 35%,
-    #608211 45%,
-    #5a7c10 60%,
-    #4e6d0d 80%,
-    #3e550d 100%
-  );
+.login-panel-bg {
+  background: linear-gradient(150deg, #030c17 0%, #040f1e 55%, #030b16 100%);
 }
 
-/* Perspective walkway — same tile color as the school entrance */
-.login-walkway {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 100%;
-  height: 60%;
-  transform: translateX(-50%);
-  z-index: 2;
-  clip-path: polygon(47.5% 5%, 52.5% 5%, 78% 100%, 22% 100%);
-  background: linear-gradient(
-    180deg,
-    #ead6bb 0%,
-    #e4ccaa 20%,
-    #dcc2a0 40%,
-    #cdb08c 70%,
-    #bd9b76 100%
-  );
+/* Dot grid for depth */
+.login-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
 }
 
-/* Tile grid lines on the walkway */
-.login-walkway-lines {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 100%;
-  height: 60%;
-  transform: translateX(-50%);
-  z-index: 3;
-  clip-path: polygon(47.5% 5%, 52.5% 5%, 78% 100%, 22% 100%);
+/* Subtle emerald glow — top-left source, secondary bottom-right */
+.login-glow {
   background:
-    repeating-linear-gradient(
-      180deg,
-      rgba(0,0,0,0.04) 0px,
-      rgba(0,0,0,0.04) 1px,
-      transparent 1px,
-      transparent 18px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      rgba(0,0,0,0.03) 0px,
-      rgba(0,0,0,0.03) 1px,
-      transparent 1px,
-      transparent 32px
-    );
+    radial-gradient(ellipse 65% 50% at 25% 10%, rgba(16, 185, 129, 0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 40% at 85% 80%, rgba(6, 78, 59, 0.06) 0%, transparent 70%);
   pointer-events: none;
 }
 
-/* Atmospheric depth — soft haze at horizon */
-.login-atmosphere {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  background: linear-gradient(
-    180deg,
-    rgba(232, 240, 228, 0.6) 0%,
-    rgba(213, 228, 204, 0.3) 25%,
-    transparent 40%,
-    transparent 100%
-  );
-  pointer-events: none;
+/* Live monitoring dashboard widget */
+.login-dashboard {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
 }
 
-/* School — anchored to ground, centered, no floating */
-.login-school {
-  position: absolute;
-  z-index: 8;
-  left: 50%;
-  bottom: 32%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-.login-school img {
-  width: 420px;
-  max-width: 60vw;
-  display: block;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.12));
-}
-
-/* Stat pills — glassmorphism */
-.login-stat-pill {
+/* Metric stat cards at the bottom */
+.login-stat-card {
   display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* CTA buttons */
+.login-cta-primary {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.15);
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #10b981;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+.login-cta-primary:hover { background: #059669; }
+
+.login-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 13px;
+  font-weight: 500;
+  transition: border-color 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.login-cta-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  color: #fff;
 }
