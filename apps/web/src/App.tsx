@@ -1,4 +1,3 @@
-import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Login } from '@/pages/Login';
 import { Dashboard } from '@/pages/Dashboard';
@@ -11,9 +10,8 @@ import { Reportes } from '@/pages/Reportes';
 import { Configuracion } from '@/pages/Configuracion';
 import { FichaAlumno } from '@/pages/FichaAlumno';
 import { Mensajes } from '@/pages/Mensajes';
+import { Scanner } from '@/pages/Scanner';
 import { AppShell } from '@/components/layout/AppShell';
-
-const Scanner = lazy(() => import('@/pages/Scanner').then((m) => ({ default: m.Scanner })));
 import { useAuth } from '@/hooks/useAuth';
 
 function Protected({ children }: { children: React.ReactNode }) {
@@ -35,7 +33,7 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
-      <Route path="/scanner" element={<Protected><Suspense fallback={null}><Scanner /></Suspense></Protected>} />
+      <Route path="/scanner" element={<Protected><Scanner /></Protected>} />
       <Route path="/alumnos" element={<Protected><Alumnos /></Protected>} />
       <Route path="/alumnos/nuevo" element={<Protected><NuevoAlumno /></Protected>} />
       <Route path="/alumnos/:id" element={<Protected><FichaAlumno /></Protected>} />
