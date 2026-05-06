@@ -28,11 +28,30 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/Dialog';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/useAuth';
 import { students, schools } from '@/lib/mock-data';
+import { api } from '@/lib/api';
 
-const child = students[0];
-const childSchool = schools.find((s) => s.rbd === child.schoolRbd)!;
+interface ApiStudent {
+  id: string;
+  full_name: string;
+  course: string;
+  photo_url: string | null;
+  establishment_name: string;
+  establishment_phone: string | null;
+  risk_score: number | null;
+}
+
+interface ApiAttendance {
+  id: string;
+  timestamp: string;
+  type: 'check_in' | 'check_out';
+  student_name: string;
+}
+
+const _mockChild = students[0];
+const _mockChildSchool = schools.find((s) => s.rbd === _mockChild.schoolRbd)!;
 
 const timeline = [
   { time: '07:58', label: 'Ingreso registrado', kind: 'in' as const, ok: true },
@@ -41,7 +60,7 @@ const timeline = [
   { time: '15:30', label: 'Salida estimada', kind: 'pending' as const, ok: false },
 ];
 
-const mockNotifications = [
+const MOCK_NOTIFICATIONS_TEMPLATE = [
   {
     id: '1',
     icon: 'entrada' as const,
@@ -57,7 +76,7 @@ const mockNotifications = [
   {
     id: '3',
     icon: 'alerta' as const,
-    message: `Alerta general activada en ${childSchool.name}`,
+    message: 'Alerta general activada en el establecimiento',
     time: 'Hace 3 dias',
   },
 ];
@@ -139,6 +158,34 @@ export function Apoderado() {
   const [smsEnabled, setSmsEnabled] = useState(true);
   const [whatsappEnabled, setWhatsappEnabled] = useState(true);
 
+  const { data: apiStudents } = useQuery({
+    queryKey: ['guardian', 'students'],
+    queryFn: () => api<{ data: ApiStudent[] }>('/guardians/me/students'),
+    select: (r) => r.data,
+    retry: false,
+  });
+
+  const { data: apiAttendance } = useQuery({
+    queryKey: ['guardian', 'attendance'],
+    queryFn: () => api<{ data: ApiAttendance[] }>('/guardians/me/attendance'),
+    select: (r) => r.data,
+    retry: false,
+  });
+
+  const apiChild = apiStudents?.[0];
+  const childSchoolName = apiChild?.establishment_name ?? _mockChildSchool.name;
+  const childName = apiChild?.full_name ?? _mockChild.name;
+  const childCourse = apiChild?.course ?? _mockChild.grade;
+  const childPhoto = apiChild?.photo_url ?? _mockChild.photoUrl;
+  const childStatus = _mockChild.status;
+  const childId = apiChild?.id ?? _mockChild.id;
+  const guardianPhone = _mockChild.guardianPhone;
+  const hasApiData = !!apiChild;
+
+  const mockNotifications = MOCK_NOTIFICATIONS_TEMPLATE.map((n) =>
+    n.id === '3' ? { ...n, message: `Alerta general activada en ${childSchoolName}` } : n,
+  );
+
   return (
     <div className="min-h-screen bg-bg pb-24">
       <header className="sticky top-0 z-10 border-b border-border bg-surface/90 px-4 py-2.5 backdrop-blur">
@@ -167,19 +214,25 @@ export function Apoderado() {
         <Card className="p-5">
           <div className="flex flex-col items-center text-center gap-3">
             <Avatar
-              name={child.name}
-              src={child.photoUrl}
+              name={childName}
+              src={childPhoto ?? undefined}
               size={80}
               className="ring-4 ring-emerald-500/20"
             />
             <div>
-              <div className="text-base font-semibold text-text">{child.name}</div>
-              <div className="mt-0.5 text-xs text-muted">{child.grade}</div>
-              <div className="mt-0.5 text-2xs text-muted">{childSchool.name}</div>
+              <div className="text-base font-semibold text-text">{childName}</div>
+              <div className="mt-0.5 text-xs text-muted">{childCourse}</div>
+              <div className="mt-0.5 text-2xs text-muted">{childSchoolName}</div>
+              {hasApiData && (
+                <span className="mt-1 inline-flex items-center gap-1 text-2xs text-emerald-600 dark:text-emerald-400">
+                  <span className="size-1.5 rounded-full bg-emerald-500" />
+                  Datos en tiempo real
+                </span>
+              )}
             </div>
           </div>
           <div className="mt-4 flex justify-center">
-            {child.status === 'presente' ? (
+            {childStatus === 'presente' ? (
               <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
                 <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
                 Presente - Ingreso 07:58 hrs
@@ -205,7 +258,7 @@ export function Apoderado() {
             <DialogHeader>
               <DialogTitle>Confirmar alerta de emergencia</DialogTitle>
               <DialogDescription>
-                Esta accion enviara una alerta de emergencia al establecimiento {childSchool.name}.
+                Esta accion enviara una alerta de emergencia al establecimiento {childSchoolName}.
                 El equipo directivo sera notificado inmediatamente. ¿Deseas continuar?
               </DialogDescription>
             </DialogHeader>
@@ -290,19 +343,37 @@ export function Apoderado() {
             </div>
           </div>
           <ul className="divide-y divide-border">
-            {recentAttendanceLog.map((row) => (
-              <li key={row.id} className="flex items-center justify-between px-4 py-2.5">
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-2xs text-muted tabular whitespace-nowrap">{row.date} {row.time}</span>
-                  {typeBadgeSmall(row.type)}
-                </div>
-                <span className="text-2xs text-muted truncate ml-2 max-w-[120px]">{row.who}</span>
-              </li>
-            ))}
+            {apiAttendance && apiAttendance.length > 0 ? (
+              apiAttendance.map((row) => {
+                const ts = new Date(row.timestamp);
+                const date = ts.toLocaleDateString('es-CL', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                const time = ts.toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' });
+                const type = row.type === 'check_in' ? 'Entrada' : 'Salida';
+                return (
+                  <li key={row.id} className="flex items-center justify-between px-4 py-2.5">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-2xs text-muted tabular whitespace-nowrap">{date} {time}</span>
+                      {typeBadgeSmall(type as 'Entrada' | 'Salida' | 'Retiro')}
+                    </div>
+                    <span className="text-2xs text-muted truncate ml-2 max-w-[120px]">Sistema</span>
+                  </li>
+                );
+              })
+            ) : (
+              recentAttendanceLog.map((row) => (
+                <li key={row.id} className="flex items-center justify-between px-4 py-2.5">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-2xs text-muted tabular whitespace-nowrap">{row.date} {row.time}</span>
+                    {typeBadgeSmall(row.type)}
+                  </div>
+                  <span className="text-2xs text-muted truncate ml-2 max-w-[120px]">{row.who}</span>
+                </li>
+              ))
+            )}
           </ul>
           <div className="border-t border-border px-4 py-2.5">
             <Link
-              to={`/alumnos/${child.id}`}
+              to={`/alumnos/${childId}`}
               className="inline-flex items-center gap-1.5 text-2xs font-medium text-accent hover:underline"
             >
               <ExternalLink className="h-3 w-3" strokeWidth={1.75} />
@@ -374,7 +445,7 @@ export function Apoderado() {
                 </div>
                 <div>
                   <div className="text-xs font-medium text-text">Notificaciones SMS</div>
-                  <div className="text-2xs text-muted">{child.guardianPhone}</div>
+                  <div className="text-2xs text-muted">{guardianPhone}</div>
                 </div>
               </div>
               <button
@@ -399,7 +470,7 @@ export function Apoderado() {
                 </div>
                 <div>
                   <div className="text-xs font-medium text-text">Notificaciones WhatsApp</div>
-                  <div className="text-2xs text-muted">{child.guardianPhone}</div>
+                  <div className="text-2xs text-muted">{guardianPhone}</div>
                 </div>
               </div>
               <button
